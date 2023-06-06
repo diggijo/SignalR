@@ -1,0 +1,6 @@
+{
+  "primaryKey": "Rb/vnBTGBcLM7qmGaI+8HYHcm0Odk8d8LYykCeEP22s=",
+  "secondaryKey": "w7O0SsRzGQscKikoW+lpmZ/Q/bqqqfNMayfmnIqlW7w=",
+  "primaryConnectionString": "Endpoint=https://signalrserverjd.service.signalr.net;AccessKey=Rb/vnBTGBcLM7qmGaI+8HYHcm0Odk8d8LYykCeEP22s=;Version=1.0;",
+  "secondaryConnectionString": "Endpoint=https://signalrserverjd.service.signalr.net;AccessKey=w7O0SsRzGQscKikoW+lpmZ/Q/bqqqfNMayfmnIqlW7w=;Version=1.0;"
+}

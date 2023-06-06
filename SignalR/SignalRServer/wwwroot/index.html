@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Server</title>
+    <script src="lib/signalr.js"></script>
+    <script src="lib/signalr.min.js"></script>
+</head>
+<body>
+    <p id="connectionMessage">SignalR connection establishing...</p>
+    <div>
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />
+        <ul id="discussion"></ul>
+    </div>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var messageInput = document.getElementById('message');
+
+            // Set initial focus to message input box.
+            messageInput.focus();
+
+            // Start the connection.
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("/SignalR")
+                .build();
+
+            // Create a function that the hub can call to broadcast messages.
+            connection.on('SentMessage', function (message) {
+                // Html encode display message.
+                var encodedMsg = message;
+
+                // Add the message to the page.
+                var liElement = document.createElement('li');
+                liElement.innerHTML = '</strong>:&nbsp;&nbsp;' + encodedMsg;
+                document.getElementById('discussion').appendChild(liElement);
+            });
+
+            // Transport fallback functionality is now built into start.
+            connection.start()
+                .then(function () {
+                    var messageElement = document.getElementById("connectionMessage");
+                    messageElement.textContent = "SignalR connection established";
+
+                    document.getElementById('sendmessage').addEventListener('click', function (event) {
+                        // Call the SendMessage method on the hub.
+                        connection.invoke('SendMessage', messageInput.value);
+
+                        messageInput.value = '';
+                        messageInput.focus();
+                        event.preventDefault();
+                    });
+                })
+                .catch(error => {
+                    console.error(error.message);
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿@page "/send"
+@using Microsoft.AspNetCore.SignalR.Client;
+
+<h1>Send</h1>
+
+<input @bind="newMessage" />
+
+<button class="btn btn-primary" @onclick="SendMessage">Send Message</button>
+
+@code {
+    private HubConnection hubConnection;
+
+    private string newMessage;
+
+    private async void SendMessage()
+    {
+        await hubConnection.InvokeAsync<string>("SendMessage", newMessage);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5081/SignalR")
+            .Build();
+
+        hubConnection.On<string>("SentMessage", (message) =>
+        {
+            newMessage = message;
+        });
+
+        await hubConnection.StartAsync();
+    }
+}
